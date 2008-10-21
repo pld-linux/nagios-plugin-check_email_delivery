@@ -3,7 +3,7 @@
 Summary:	Nagios plugins to check email delivery
 Name:		nagios-plugin-%{plugin}
 Version:	0.6.3
-Release:	0.1
+Release:	0.2
 License:	GPL v2
 Group:		Networking
 Source0:	http://www.buhacoff.net/2008/projects/nagios/check_email_delivery-%{version}.tar.gz
@@ -11,7 +11,9 @@ Source0:	http://www.buhacoff.net/2008/projects/nagios/check_email_delivery-%{ver
 URL:		http://apricoti.pbwiki.com/NagiosCheckEmailDelivery
 BuildRequires:	perl-tools-pod
 BuildRequires:	rpm-perlprov >= 4.1-13
+BuildRequires:	sed >= 4.0
 Requires:	nagios-core
+Requires:	perl-Mail-IMAPClient
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -19,12 +21,12 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_sysconfdir	/etc/nagios/plugins
 
 %description
-Nagios plugin which sends e-mail to server and then checks if the email arrived
-by login into IMAP server.
+Nagios plugin which sends e-mail to server and then checks if the
+email arrived by login into IMAP server.
 
 %description -l et.UTF-8
-Nagiose plugin, mis saadab emaili serverile ning seejärel logib IMAPiga
-kasutajaga mailikontole test ning kontrollib kas email on saabunud.
+Nagiose plugin, mis saadab emaili serverile ning seejärel logib
+IMAPiga kasutajaga mailikontole ning kontrollib kas email on saabunud.
 
 %prep
 %setup -q -n check_email_delivery-%{version}
@@ -34,6 +36,8 @@ kasutajaga mailikontole test ning kontrollib kas email on saabunud.
 mv check_email_delivery_epn check_email_delivery
 mv check_imap_receive_epn check_imap_receive
 mv check_smtp_send_epn check_smtp_send
+
+%{__sed} -i -e 's,/usr/local/nagios/libexec,%{plugindir},' check_*
 
 cat > nagios.cfg <<'EOF'
 define command {
