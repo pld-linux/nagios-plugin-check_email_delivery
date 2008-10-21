@@ -1,6 +1,7 @@
 %define		plugin	check_email_delivery
 %include	/usr/lib/rpm/macros.perl
 Summary:	Nagios plugins to check email delivery
+Summary(et.UTF-8):	Nagiose pluginad kontrollimaks e-maili saatmist
 Name:		nagios-plugin-%{plugin}
 Version:	0.6.3
 Release:	0.2
